@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<exe4j version="5.0.1" transformSequenceNumber="2">
+  <directoryPresets config="D:/TestProject/vexcel_lib" />
+  <application name="vexcel" distributionSourceDir="D:/">
+    <languages>
+      <principalLanguage id="en" customLocalizationFile="" />
+    </languages>
+  </application>
+  <executable name="vexcel" type="2" iconSet="true" iconFile="C:/Users/lovet/Desktop/vexcel.ico" executableDir="." redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="false" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false" singleInstanceActivate="true" dpiAware="false" amd64="true">
+    <messageSet />
+    <versionInfo include="true" fileVersion="" fileDescription="" legalCopyright="" internalName="" productName="" companyName="350685639@qq.com" productVersion="3.0 for windows" />
+  </executable>
+  <splashScreen show="false" width="135" height="136" bitmapFile="D:/lockscreen/fileDB/icon/lion3.png" windowsNative="false" textOverlay="false">
+    <text>
+      <statusLine x="59" y="119" text="" fontSize="8" fontColor="0,0,0" bold="false" />
+      <versionLine x="59" y="95" text="version %VERSION%" fontSize="8" fontColor="0,0,0" bold="false" />
+    </text>
+  </splashScreen>
+  <java mainClass="org.vexcel.gui.MainLogistic" vmParameters="" arguments="" allowVMPassthroughParameters="true" preferredVM="" bundleRuntime="true" minVersion="1.6" maxVersion="" allowBetaVM="true" jdkOnly="true">
+    <searchSequence>
+      <registry />
+      <envVar name="JAVA_HOME" />
+      <envVar name="JDK_HOME" />
+    </searchSequence>
+    <classPath>
+      <archive location="D:/TestProject/vexcel.jar" failOnError="false" />
+      <archive location="D:/TestProject/vexcel_lib/commons-codec-1.10.jar" failOnError="false" />
+      <archive location="D:/TestProject/vexcel_lib/commons-collections4-4.1.jar" failOnError="false" />
+      <archive location="D:/TestProject/vexcel_lib/dom4j-1.6.1.jar" failOnError="false" />
+      <archive location="D:/TestProject/vexcel_lib/dom4j-1.6.1-2.0.jar" failOnError="false" />
+      <archive location="D:/TestProject/vexcel_lib/poi-3.17.jar" failOnError="false" />
+      <archive location="D:/TestProject/vexcel_lib/xml-apis-1.0.b2.jar" failOnError="false" />
+      <archive location="D:/TestProject/vexcel_lib/log4j-1.2.17.jar" failOnError="false" />
+    </classPath>
+    <nativeLibraryDirectories />
+  </java>
+  <includedFiles />
+  <unextractableFiles />
+</exe4j>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validators>
+ <validator id="white" type="xls">
+   <sheet sheetIndex="0" beginRow="1" endRow="10000">
+ 	<column rowIndex="1" name="客户姓名" isNullAble="false" maxLength="80" classType="java.lang.String" />
+	<column rowIndex="2" name="证件类型"  isNullAble="false" classType="java.lang.String" />
+	<column rowIndex="3" name="证件号码"  isNullAble="false" classType="java.lang.String" />
+	<column rowIndex="5" name="初始利率"  isNullAble="false" maxIntLength="9" maxScaleLength="6" classType="java.math.BigDecimal" />
+	<column rowIndex="6" name="预授信额度"  isNullAble="false" maxIntLength="17" maxScaleLength="2" classType="java.math.BigDecimal" />
+	<column rowIndex="7" name="预授信日期"  isNullAble="false" minLength="8" maxLength="8" DateFormat="yyyyMMdd" classType="java.util.Date" />
+	<column rowIndex="8" name="预授信到期日"  isNullAble="false" minLength="8" maxLength="8" DateFormat="yyyyMMdd" classType="java.util.Date" />
+	<column rowIndex="9" name="预授信期限"  isNullAble="false"  classType="java.lang.String" />
+	<column rowIndex="10" name="借记卡归属机构"   isNullAble="false" minLength="6" maxLength="6" rule="\\d{6}" classType="java.lang.String" />
+	<column rowIndex="11" name="手机银行归属机构"   isNullAble="false" minLength="6" maxLength="6" rule="\\d{6}" classType="java.lang.String" />
+	<column rowIndex="12" name="客户归属机构"  isNullAble="false" minLength="6" maxLength="6" rule="\\d{6}" classType="java.lang.String" />
+	<column rowIndex="13" name="手机号"  isNullAble="false" minLength="11" maxLength="11" classType="java.lang.String" />
+	<uniqueKeys>
+	<uniqueKey keyId="Check_idtfno" uniqueFields="2,3"/>
+	</uniqueKeys>
+   </sheet>
+  </validator>
+  <validator id="test" type="xls">
+   <sheet sheetIndex="0" beginRow="1" endRow="10000">
+ 	<column rowIndex="1" name="客户姓名" isNullAble="false"  classType="java.lang.String" />
+   </sheet>
+  </validator>
+  
+  
+  <!-- 
+   rules:
+   
+  <row/> can't be null's attribute is [rowIndex,classType,name]
+   
+   this allow classType is [java.lang.String,java.lang.Integer,java.lang.Long,
+   							java.lang.String,java.math.BigDecimal,java.lang.Double
+   							java.lang.Float,java.util.Date]
+   classType:java.lang.Integer allow attributes      [minLength maxLength isNullAble rule]
+   classType:java.lang.Long    allow attributes      [minLength maxLength isNullAble rule]
+   classType:java.lang.String  allow  attributes     [minLength maxLength isNullAble rule]
+   classType:java.math.BigDecimal  allow  attributes [ isNullAble rule  maxIntLength minIntLength minScaleLength maxScaleLength]
+   classType:java.lang.Double  allow  attributes     [ isNullAble rule  maxIntLength minIntLength minScaleLength maxScaleLength]
+   classType:java.lang.Float  allow  attributes      [ isNullAble rule  maxIntLength minIntLength minScaleLength maxScaleLength]
+   classType:java.util.Date    allow attributes      [minLength maxLength DateFormat isNullAble rule]
+   
+   because of have no time to write xsd validation file ,so developer should allow this rules 
+   bin.L 20190508
+   //uniqueKey
+   -->
+   
+</validators>
