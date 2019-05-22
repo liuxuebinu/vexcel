@@ -1,5 +1,6 @@
 package org.vexcel.engine;
 
+import org.vexcel.exception.ValidateRuntimeException;
 import org.vexcel.factory.MessageFactory;
 import org.vexcel.pojo.Message;
 import org.vexcel.pojo.ValidateRule;
@@ -22,7 +23,8 @@ public class StrategyImpl implements RuleStrategy {
                 || rule.getClassType().equals("java.math.BigDecimal")) {
             return this.floatStrategy(excelCellString, rule);
         } else {
-            throw new RuntimeException("不支持的数据类型");
+            throw new ValidateRuntimeException(rule.getClassType() + "不支持的数据类型");
+
         }
     }
 

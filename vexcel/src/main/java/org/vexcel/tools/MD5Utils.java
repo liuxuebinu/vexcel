@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.vexcel.exception.ValidateRuntimeException;
+
 public class MD5Utils {
 
     public static String MD5(File file) {
@@ -18,9 +20,11 @@ public class MD5Utils {
             Md5Str = org.apache.commons.codec.digest.DigestUtils.md5Hex(b);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            throw new ValidateRuntimeException("加签文件未找到");
 
         } catch (IOException e) {
             e.printStackTrace();
+            throw new ValidateRuntimeException("文件加签失败");
         } finally {
             if (in != null)
                 try {

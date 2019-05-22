@@ -22,6 +22,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.vexcel.engine.RuleEngine;
+import org.vexcel.exception.ValidateRuntimeException;
 import org.vexcel.pojo.Message;
 import org.vexcel.pojo.UniqueKey;
 import org.vexcel.pojo.VSheet;
@@ -93,6 +94,7 @@ public class ExcelUtils {
                 excelRight = false;
                 log.error("解析excel失败，未找到目标文件");
                 log.error(e);
+                throw new ValidateRuntimeException(e.toString());
             }
             HSSFWorkbook hssfworkbook = null;
             try {
@@ -103,6 +105,7 @@ public class ExcelUtils {
                 excelRight = false;
                 log.error("解析工作表失败");
                 log.error(e);
+                throw new ValidateRuntimeException(e.toString());
             }
             HSSFSheet hssfsheet = hssfworkbook.getSheetAt(sheet.getSheetIndex());
             int rows = hssfsheet.getLastRowNum();
@@ -129,7 +132,6 @@ public class ExcelUtils {
                         Cell cell = hssfRow.getCell((Integer) key);
                         String cellText = getCellText(cell);
                         count++;
-                        // log.error("扫描第" + (rowNum + 1) + "行:" + count);
                         Message msg = RuleEngine.process(cellText, coumnRules_Map.get(key));
                         if (!msg.isSuccess()) {
                             log.error("第" + (rowNum + 1) + "行:" + msg.getMsg());
@@ -140,8 +142,6 @@ public class ExcelUtils {
 
                         fileLabel.setText("excel校验中," + "sheet" + sheet.getSheetIndex() + ",进度:"
                                 + new BigDecimal(b.doubleValue() * 100).setScale(2, RoundingMode.HALF_UP) + "%");
-                        // count++;
-
                     }
                     for (UniqueKey uniqueRule : uniqueKeys) {
                         List<Integer> keyRows = uniqueRule.getUniqueColumn();
@@ -156,7 +156,7 @@ public class ExcelUtils {
                             String cellText = getCellText(cell);
                             if (CommonUtil.isNull(cellText)) {
                                 keyString = "";
-                                break;// 字符中有null存在时，跳出内层循环，此条唯一
+                                break;
                             }
                             keyString += "--" + cellText;
                         }
@@ -188,9 +188,8 @@ public class ExcelUtils {
             }
 
         }
-        log.error(excelRight);
-        log.error(count);
-        log.error(excelCounts);
+        log.error("RESULT:" + String.valueOf(excelRight) + " TOTAL:" + String.valueOf(excelCounts) + " SCANED:"
+                + String.valueOf(count));
         if (count == excelCounts && excelRight)
             excelRight = true;
         else {
@@ -229,70 +228,69 @@ public class ExcelUtils {
                 excelRight = false;
                 log.error("解析excel失败，未找到目标文件");
                 log.error(e);
+                throw new ValidateRuntimeException(e.toString());
             }
-            XSSFWorkbook xssfworkbook = null;
+            XSSFWorkbook hssfworkbook = null;
             try {
-                xssfworkbook = new XSSFWorkbook(is);
+                hssfworkbook = new XSSFWorkbook(is);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
                 excelRight = false;
                 log.error("解析工作表失败");
                 log.error(e);
+                throw new ValidateRuntimeException(e.toString());
             }
-            XSSFSheet xssfsheet = xssfworkbook.getSheetAt(sheet.getSheetIndex());
-            int rows = xssfsheet.getLastRowNum();
+            XSSFSheet hssfsheet = hssfworkbook.getSheetAt(sheet.getSheetIndex());
+            int rows = hssfsheet.getLastRowNum();
 
             HashMap<String, Integer> countIdt = new HashMap(rows * uniqueKeys.size() + 10, 1F);
 
             int endRow = sheet.getEndRow();
-            if (sheet.getEndRow() != null && xssfsheet.getLastRowNum() > endRow) {
+            if (sheet.getEndRow() != null && hssfsheet.getLastRowNum() > endRow) {
                 excelRight = false;
                 log.error("解析工作表失败:表格sheet数据不能超过" + sheet.getEndRow() + "条");
             }
-            excelCounts += (xssfsheet.getLastRowNum() - sheet.getBeginRow() + 1);
+            excelCounts += (hssfsheet.getLastRowNum() - sheet.getBeginRow() + 1);
             try {
 
-                for (int rowNum = sheet.getBeginRow(); rowNum <= xssfsheet.getLastRowNum(); rowNum++) {
+                for (int rowNum = sheet.getBeginRow(); rowNum <= hssfsheet.getLastRowNum(); rowNum++) {
 
-                    XSSFRow xssfRow = xssfsheet.getRow(rowNum);
+                    XSSFRow hssfRow = hssfsheet.getRow(rowNum);
                     for (Object key : rowKeys) {
-                        if (xssfRow.getCell((Integer) key) == null) {
-                            xssfRow.createCell((Integer) key);
-                            xssfRow.getCell((Integer) key).setCellType(Cell.CELL_TYPE_STRING);
-                            xssfRow.getCell((Integer) key).setCellValue("");
+                        if (hssfRow.getCell((Integer) key) == null) {
+                            hssfRow.createCell((Integer) key);
+                            hssfRow.getCell((Integer) key).setCellType(Cell.CELL_TYPE_STRING);
+                            hssfRow.getCell((Integer) key).setCellValue("");
                         }
-                        Cell cell = xssfRow.getCell((Integer) key);
+                        Cell cell = hssfRow.getCell((Integer) key);
                         String cellText = getCellText(cell);
                         count++;
-                        // log.error("扫描第" + (rowNum + 1) + "行:" + count);
                         Message msg = RuleEngine.process(cellText, coumnRules_Map.get(key));
                         if (!msg.isSuccess()) {
                             log.error("第" + (rowNum + 1) + "行:" + msg.getMsg());
                             excelRight = false;
                         }
                         b = new BigDecimal(rowNum - 1).setScale(4, RoundingMode.HALF_UP)
-                                .divide(new BigDecimal(xssfsheet.getLastRowNum() - 1), 4, RoundingMode.HALF_UP);
+                                .divide(new BigDecimal(hssfsheet.getLastRowNum() - 1), 4, RoundingMode.HALF_UP);
 
                         fileLabel.setText("excel校验中," + "sheet" + sheet.getSheetIndex() + ",进度:"
                                 + new BigDecimal(b.doubleValue() * 100).setScale(2, RoundingMode.HALF_UP) + "%");
-                        // count++;
-
                     }
                     for (UniqueKey uniqueRule : uniqueKeys) {
                         List<Integer> keyRows = uniqueRule.getUniqueColumn();
                         String keyString = uniqueRule.getKeyName();
                         for (Integer key : keyRows) {
-                            if (xssfRow.getCell((Integer) key) == null) {
-                                xssfRow.createCell((Integer) key);
-                                xssfRow.getCell((Integer) key).setCellType(Cell.CELL_TYPE_STRING);
-                                xssfRow.getCell((Integer) key).setCellValue("");
+                            if (hssfRow.getCell((Integer) key) == null) {
+                                hssfRow.createCell((Integer) key);
+                                hssfRow.getCell((Integer) key).setCellType(Cell.CELL_TYPE_STRING);
+                                hssfRow.getCell((Integer) key).setCellValue("");
                             }
-                            Cell cell = xssfRow.getCell((Integer) key);
+                            Cell cell = hssfRow.getCell((Integer) key);
                             String cellText = getCellText(cell);
                             if (CommonUtil.isNull(cellText)) {
                                 keyString = "";
-                                break;// 字符中有null存在时，跳出内层循环，此条唯一
+                                break;
                             }
                             keyString += "--" + cellText;
                         }
@@ -324,9 +322,8 @@ public class ExcelUtils {
             }
 
         }
-        log.error(excelRight);
-        log.error(count);
-        log.error(excelCounts);
+        log.error("RESULT:" + String.valueOf(excelRight) + " TOTAL:" + String.valueOf(excelCounts) + " SCANED:"
+                + String.valueOf(count));
         if (count == excelCounts && excelRight)
             excelRight = true;
         else {

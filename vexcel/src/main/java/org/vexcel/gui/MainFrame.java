@@ -127,7 +127,6 @@ public class MainFrame implements Runnable {
         tipLabel = new JLabel("<html><br/><br/><br/>拖拽文件到此区域</html>", SwingConstants.LEFT);
         fileLabel = new JTextArea();
         fileLabel.setForeground(Color.white);
-        // fileLabel.setHorizontalAlignment(SwingConstants.LEFT);
         fileLabel.setSize(mainWidth, 1 * height);
         fileLabel.setBackground(Color.RED);
         fileLabel.setEditable(false);
@@ -176,16 +175,6 @@ public class MainFrame implements Runnable {
         mainFrame.setVisible(true);
     }
 
-    /**
-    
-    public static void main(String[] args) throws Exception {
-        // TODO Auto-generated method stub
-        UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");// 设置皮肤
-        new MainFrame().setVisible(true);
-        ;
-    
-    }**/
-
     public void drag()// 定义的拖拽方法
     {
         // panel表示要接受拖拽的控件
@@ -202,9 +191,7 @@ public class MainFrame implements Runnable {
 
                         temp = list.get(0).getAbsolutePath();
                         String fileName = list.get(0).getName();
-                        if (!new String(temp.substring(temp.length() - 3, temp.length())).equals(config.getExcelType())
-                                || new String(temp.substring(temp.length() - 4, temp.length()))
-                                        .equals(config.getExcelType())) {
+                        if (!checkType(fileName, config.getExcelType())) {
 
                             JOptionPane.showMessageDialog(null, "只支持" + config.getExcelType() + "格式");
 
@@ -229,6 +216,17 @@ public class MainFrame implements Runnable {
             }
         });
     }
+
+    private boolean checkType(String filePath, String fileType) {
+        if (fileType.equals("xls")) {
+            return new String(filePath.substring(filePath.length() - 3, filePath.length())).equals(fileType);
+        } else if (fileType.equals("xlsx")) {
+            return new String(filePath.substring(filePath.length() - 4, filePath.length())).equals(fileType);
+        } else {
+            return false;
+        }
+
+    };
 
     public void run() {
         // TODO Auto-generated method stub
