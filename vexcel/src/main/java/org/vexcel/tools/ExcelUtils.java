@@ -131,7 +131,7 @@ public class ExcelUtils {
                         }
                         Cell cell = hssfRow.getCell((Integer) key);
                         String cellText = getCellText(cell);
-                        count++;
+
                         Message msg = RuleEngine.process(cellText, coumnRules_Map.get(key));
                         if (!msg.isSuccess()) {
                             log.error("第" + (rowNum + 1) + "行:" + msg.getMsg());
@@ -143,6 +143,7 @@ public class ExcelUtils {
                         fileLabel.setText("excel校验中," + "sheet" + sheet.getSheetIndex() + ",进度:"
                                 + new BigDecimal(b.doubleValue() * 100).setScale(2, RoundingMode.HALF_UP) + "%");
                     }
+                    count++;
                     for (UniqueKey uniqueRule : uniqueKeys) {
                         List<Integer> keyRows = uniqueRule.getUniqueColumn();
                         String keyString = uniqueRule.getKeyName();
@@ -257,6 +258,7 @@ public class ExcelUtils {
                 for (int rowNum = sheet.getBeginRow(); rowNum <= hssfsheet.getLastRowNum(); rowNum++) {
 
                     XSSFRow hssfRow = hssfsheet.getRow(rowNum);
+
                     for (Object key : rowKeys) {
                         if (hssfRow.getCell((Integer) key) == null) {
                             hssfRow.createCell((Integer) key);
@@ -265,7 +267,7 @@ public class ExcelUtils {
                         }
                         Cell cell = hssfRow.getCell((Integer) key);
                         String cellText = getCellText(cell);
-                        count++;
+
                         Message msg = RuleEngine.process(cellText, coumnRules_Map.get(key));
                         if (!msg.isSuccess()) {
                             log.error("第" + (rowNum + 1) + "行:" + msg.getMsg());
@@ -277,6 +279,7 @@ public class ExcelUtils {
                         fileLabel.setText("excel校验中," + "sheet" + sheet.getSheetIndex() + ",进度:"
                                 + new BigDecimal(b.doubleValue() * 100).setScale(2, RoundingMode.HALF_UP) + "%");
                     }
+                    count++;
                     for (UniqueKey uniqueRule : uniqueKeys) {
                         List<Integer> keyRows = uniqueRule.getUniqueColumn();
                         String keyString = uniqueRule.getKeyName();
